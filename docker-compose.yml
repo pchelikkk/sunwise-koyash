@@ -1,0 +1,59 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: koyash-backend
+    env_file:
+      - ./backend/.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - ./data:/data:ro
+      - ./docs:/docs:ro
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - koyash-network
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: /api/v1
+    container_name: koyash-frontend
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - koyash-network
+
+  mongo:
+    image: mongo:7
+    container_name: koyash-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: koyash
+      MONGO_INITDB_ROOT_PASSWORD: koyash_dev_password
+      MONGO_INITDB_DATABASE: koyash
+    volumes:
+      - koyash_mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - koyash-network
+
+volumes:
+  koyash_mongo_data:
+
+networks:
+  koyash-network:
+    driver: bridge

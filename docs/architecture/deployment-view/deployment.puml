@@ -1,0 +1,25 @@
+@startuml koyash-deployment-view
+title KOYASH — Deployment View (MVP v2)
+
+node "University VM (10.93.26.208)" as vm {
+  node "Docker Engine" as docker {
+    node "koyash-frontend (nginx:1.27)\nport 8080 -> 80" as fe {
+      [SPA static build]
+    }
+    node "koyash-backend (python:3.12 / uvicorn)\nport 8000" as be {
+      [FastAPI app]
+    }
+    node "koyash-mongo (mongo:7)\nport 27017" as db {
+      [MongoDB]
+    }
+    database "koyash_mongo_data (volume)" as vol
+  }
+}
+
+actor "User / Customer / TA" as user
+
+user --> fe : http://10.93.26.208:8080/
+fe --> be : /api -> backend:8000 (koyash-network)
+be --> db : mongodb (koyash-network)
+db --> vol : persist data
+@enduml

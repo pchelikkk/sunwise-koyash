@@ -1,0 +1,871 @@
+{
+  "algorithm_version": "rule-based-v2",
+  "dataset": {
+    "invalid_row_count": 0,
+    "product_count": 69,
+    "routine_step_distribution": {
+      "cleanser": 15,
+      "mask": 5,
+      "moisturizer": 8,
+      "serum": 12,
+      "spf": 9,
+      "toner": 20
+    }
+  },
+  "scenarios": [
+    {
+      "allowed_product_count": 28,
+      "contract_error_count": 0,
+      "filter_reasons": {
+        "budget_hard_cap": 5,
+        "excluded_ingredient": 35,
+        "inactive": 1
+      },
+      "findings": [],
+      "input": {
+        "age": 24,
+        "budget": "balanced",
+        "concerns": [
+          "acne",
+          "sebum"
+        ],
+        "custom_restrictions": [],
+        "excluded_ingredients": [
+          "fragrance"
+        ],
+        "experience": "guided",
+        "primary_concern": null,
+        "routine_preference": "balanced",
+        "sensitivity_level": "unknown",
+        "skin_type": "combination",
+        "texture_preference": "no_preference",
+        "values": [
+          "price_quality"
+        ]
+      },
+      "quality_gap_count": 0,
+      "routine": {
+        "evening": [
+          {
+            "brand": "Aravia Laboratories",
+            "external_id": "product_004",
+            "name": "Hyaluronic Micellar Water",
+            "routine_step": "cleanser",
+            "score": 71
+          },
+          {
+            "brand": "Round Lab",
+            "external_id": "product_043",
+            "name": "Birch juice moisturizing toner",
+            "routine_step": "toner",
+            "score": 64
+          },
+          {
+            "brand": "ART & FACT",
+            "external_id": "product_052",
+            "name": "Azeloglicine 10%",
+            "routine_step": "serum",
+            "score": 78
+          },
+          {
+            "brand": "Uriage",
+            "external_id": "product_049",
+            "name": "Xemose Face Cream",
+            "routine_step": "moisturizer",
+            "score": 54
+          }
+        ],
+        "morning": [
+          {
+            "brand": "Aravia Laboratories",
+            "external_id": "product_004",
+            "name": "Hyaluronic Micellar Water",
+            "routine_step": "cleanser",
+            "score": 71
+          },
+          {
+            "brand": "Uriage",
+            "external_id": "product_049",
+            "name": "Xemose Face Cream",
+            "routine_step": "moisturizer",
+            "score": 54
+          },
+          {
+            "brand": "POGONIA",
+            "external_id": "product_068",
+            "name": "Idebenone Mild SPF 50+",
+            "routine_step": "spf",
+            "score": 64
+          }
+        ]
+      },
+      "scenario_id": "combination_acne_sebum_no_fragrance",
+      "title": "Combination skin, acne and sebum, no fragrance",
+      "warning_count": 0
+    },
+    {
+      "allowed_product_count": 19,
+      "contract_error_count": 0,
+      "filter_reasons": {
+        "budget_hard_cap": 4,
+        "excluded_ingredient": 42,
+        "inactive": 1,
+        "sensitive_risk": 3
+      },
+      "findings": [],
+      "input": {
+        "age": 28,
+        "budget": "balanced",
+        "concerns": [
+          "reactivity"
+        ],
+        "custom_restrictions": [],
+        "excluded_ingredients": [
+          "fragrance",
+          "alcohol"
+        ],
+        "experience": "guided",
+        "primary_concern": null,
+        "routine_preference": "balanced",
+        "sensitivity_level": "unknown",
+        "skin_type": "sensitive",
+        "texture_preference": "no_preference",
+        "values": [
+          "comfort",
+          "soft_formula"
+        ]
+      },
+      "quality_gap_count": 0,
+      "routine": {
+        "evening": [
+          {
+            "brand": "Aravia Laboratories",
+            "external_id": "product_004",
+            "name": "Hyaluronic Micellar Water",
+            "routine_step": "cleanser",
+            "score": 91
+          },
+          {
+            "brand": "COSRX",
+            "external_id": "product_018",
+            "name": "Refresh AHA BHA Vitamin C Daily Toner",
+            "routine_step": "toner",
+            "score": 89
+          },
+          {
+            "brand": "Skin 1004",
+            "external_id": "product_055",
+            "name": "Madagascar Centella Ampoule",
+            "routine_step": "serum",
+            "score": 89
+          },
+          {
+            "brand": "Uriage",
+            "external_id": "product_049",
+            "name": "Xemose Face Cream",
+            "routine_step": "moisturizer",
+            "score": 94
+          }
+        ],
+        "morning": [
+          {
+            "brand": "Aravia Laboratories",
+            "external_id": "product_004",
+            "name": "Hyaluronic Micellar Water",
+            "routine_step": "cleanser",
+            "score": 91
+          },
+          {
+            "brand": "Uriage",
+            "external_id": "product_049",
+            "name": "Xemose Face Cream",
+            "routine_step": "moisturizer",
+            "score": 94
+          },
+          {
+            "brand": "Round Lab",
+            "external_id": "product_046",
+            "name": "Birch juice moisturizing sunscreen SPF 50+",
+            "routine_step": "spf",
+            "score": 86
+          }
+        ]
+      },
+      "scenario_id": "sensitive_reactivity_no_fragrance_alcohol",
+      "title": "Sensitive skin and reactivity, no fragrance or alcohol",
+      "warning_count": 0
+    },
+    {
+      "allowed_product_count": 30,
+      "contract_error_count": 0,
+      "filter_reasons": {
+        "budget_hard_cap": 38,
+        "inactive": 1
+      },
+      "findings": [],
+      "input": {
+        "age": 31,
+        "budget": "minimum",
+        "concerns": [
+          "dryness",
+          "dehydration"
+        ],
+        "custom_restrictions": [],
+        "excluded_ingredients": [],
+        "experience": "guided",
+        "primary_concern": null,
+        "routine_preference": "balanced",
+        "sensitivity_level": "unknown",
+        "skin_type": "dry",
+        "texture_preference": "no_preference",
+        "values": [
+          "price_quality"
+        ]
+      },
+      "quality_gap_count": 0,
+      "routine": {
+        "evening": [
+          {
+            "brand": "DE_CODE",
+            "external_id": "product_005",
+            "name": "Мицеллярная пенка aqua key",
+            "routine_step": "cleanser",
+            "score": 86
+          },
+          {
+            "brand": "8.1.8 Beauty Formula",
+            "external_id": "product_015",
+            "name": "B.Moisture Мягкий совершенствующий тоник",
+            "routine_step": "toner",
+            "score": 71
+          },
+          {
+            "brand": "TRUE ALCHEMY",
+            "external_id": "product_061",
+            "name": "Arginine 2.7%",
+            "routine_step": "serum",
+            "score": 84
+          },
+          {
+            "brand": "THE U",
+            "external_id": "product_037",
+            "name": "Keep Calm Cream",
+            "routine_step": "moisturizer",
+            "score": 71
+          }
+        ],
+        "morning": [
+          {
+            "brand": "DE_CODE",
+            "external_id": "product_005",
+            "name": "Мицеллярная пенка aqua key",
+            "routine_step": "cleanser",
+            "score": 86
+          },
+          {
+            "brand": "THE U",
+            "external_id": "product_037",
+            "name": "Keep Calm Cream",
+            "routine_step": "moisturizer",
+            "score": 71
+          },
+          {
+            "brand": "POGONIA",
+            "external_id": "product_068",
+            "name": "Idebenone Mild SPF 50+",
+            "routine_step": "spf",
+            "score": 54
+          }
+        ]
+      },
+      "scenario_id": "dry_dehydration_minimum_budget",
+      "title": "Dry and dehydrated skin, minimum budget",
+      "warning_count": 0
+    },
+    {
+      "allowed_product_count": 30,
+      "contract_error_count": 0,
+      "filter_reasons": {
+        "budget_hard_cap": 38,
+        "inactive": 1
+      },
+      "findings": [],
+      "input": {
+        "age": 21,
+        "budget": "minimum",
+        "concerns": [
+          "acne",
+          "sebum"
+        ],
+        "custom_restrictions": [],
+        "excluded_ingredients": [],
+        "experience": "guided",
+        "primary_concern": null,
+        "routine_preference": "minimal",
+        "sensitivity_level": "unknown",
+        "skin_type": "oily",
+        "texture_preference": "no_preference",
+        "values": [
+          "price_quality",
+          "minimal_steps"
+        ]
+      },
+      "quality_gap_count": 0,
+      "routine": {
+        "evening": [
+          {
+            "brand": "andplus",
+            "external_id": "product_053",
+            "name": "2% BHA Cream Cleanser 31.2",
+            "routine_step": "cleanser",
+            "score": 76
+          },
+          {
+            "brand": "THE U",
+            "external_id": "product_037",
+            "name": "Keep Calm Cream",
+            "routine_step": "moisturizer",
+            "score": 63
+          }
+        ],
+        "morning": [
+          {
+            "brand": "andplus",
+            "external_id": "product_053",
+            "name": "2% BHA Cream Cleanser 31.2",
+            "routine_step": "cleanser",
+            "score": 76
+          },
+          {
+            "brand": "THE U",
+            "external_id": "product_037",
+            "name": "Keep Calm Cream",
+            "routine_step": "moisturizer",
+            "score": 63
+          },
+          {
+            "brand": "FOR ME by gold apple",
+            "external_id": "product_066",
+            "name": "Daily Sunscreen SPF 50 PA++++",
+            "routine_step": "spf",
+            "score": 63
+          }
+        ]
+      },
+      "scenario_id": "oily_acne_sebum_minimum_budget",
+      "title": "Oily skin, acne and sebum, minimum budget",
+      "warning_count": 0
+    },
+    {
+      "allowed_product_count": 52,
+      "contract_error_count": 0,
+      "filter_reasons": {
+        "budget_hard_cap": 16,
+        "inactive": 1
+      },
+      "findings": [],
+      "input": {
+        "age": 34,
+        "budget": "balanced",
+        "concerns": [
+          "pigmentation",
+          "dullness"
+        ],
+        "custom_restrictions": [],
+        "excluded_ingredients": [],
+        "experience": "guided",
+        "primary_concern": null,
+        "routine_preference": "balanced",
+        "sensitivity_level": "unknown",
+        "skin_type": "normal",
+        "texture_preference": "no_preference",
+        "values": [
+          "price_quality"
+        ]
+      },
+      "quality_gap_count": 0,
+      "routine": {
+        "evening": [
+          {
+            "brand": "DE_CODE",
+            "external_id": "product_005",
+            "name": "Мицеллярная пенка aqua key",
+            "routine_step": "cleanser",
+            "score": 73
+          },
+          {
+            "brand": "Round Lab",
+            "external_id": "product_043",
+            "name": "Birch juice moisturizing toner",
+            "routine_step": "toner",
+            "score": 74
+          },
+          {
+            "brand": "TRUE ALCHEMY",
+            "external_id": "product_063",
+            "name": "Vitamin C 13%",
+            "routine_step": "serum",
+            "score": 74
+          },
+          {
+            "brand": "Гельтек",
+            "external_id": "product_038",
+            "name": "NMF Protection",
+            "routine_step": "moisturizer",
+            "score": 61
+          }
+        ],
+        "morning": [
+          {
+            "brand": "DE_CODE",
+            "external_id": "product_005",
+            "name": "Мицеллярная пенка aqua key",
+            "routine_step": "cleanser",
+            "score": 73
+          },
+          {
+            "brand": "Гельтек",
+            "external_id": "product_038",
+            "name": "NMF Protection",
+            "routine_step": "moisturizer",
+            "score": 61
+          },
+          {
+            "brand": "Round Lab",
+            "external_id": "product_069",
+            "name": "Birch Juice Moisturizing Sunscreen SPF 50+ PA++++",
+            "routine_step": "spf",
+            "score": 71
+          }
+        ]
+      },
+      "scenario_id": "normal_pigmentation_dullness",
+      "title": "Normal skin, pigmentation and dullness",
+      "warning_count": 0
+    },
+    {
+      "allowed_product_count": 47,
+      "contract_error_count": 0,
+      "filter_reasons": {
+        "budget_hard_cap": 13,
+        "excluded_ingredient": 8,
+        "inactive": 1
+      },
+      "findings": [],
+      "input": {
+        "age": 22,
+        "budget": "balanced",
+        "concerns": [
+          "dryness",
+          "reactivity"
+        ],
+        "custom_restrictions": [],
+        "excluded_ingredients": [
+          "essential_oils"
+        ],
+        "experience": "beginner",
+        "primary_concern": null,
+        "routine_preference": "minimal",
+        "sensitivity_level": "unknown",
+        "skin_type": "combination",
+        "texture_preference": "no_preference",
+        "values": [
+          "minimal_steps",
+          "comfort"
+        ]
+      },
+      "quality_gap_count": 0,
+      "routine": {
+        "evening": [
+          {
+            "brand": "Aravia Laboratories",
+            "external_id": "product_004",
+            "name": "Hyaluronic Micellar Water",
+            "routine_step": "cleanser",
+            "score": 85
+          },
+          {
+            "brand": "Uriage",
+            "external_id": "product_049",
+            "name": "Xemose Face Cream",
+            "routine_step": "moisturizer",
+            "score": 78
+          }
+        ],
+        "morning": [
+          {
+            "brand": "Aravia Laboratories",
+            "external_id": "product_004",
+            "name": "Hyaluronic Micellar Water",
+            "routine_step": "cleanser",
+            "score": 85
+          },
+          {
+            "brand": "Uriage",
+            "external_id": "product_049",
+            "name": "Xemose Face Cream",
+            "routine_step": "moisturizer",
+            "score": 78
+          },
+          {
+            "brand": "POGONIA",
+            "external_id": "product_068",
+            "name": "Idebenone Mild SPF 50+",
+            "routine_step": "spf",
+            "score": 68
+          }
+        ]
+      },
+      "scenario_id": "beginner_simple_no_essential_oils",
+      "title": "Beginner simple routine, no essential oils",
+      "warning_count": 0
+    },
+    {
+      "allowed_product_count": 68,
+      "contract_error_count": 0,
+      "filter_reasons": {
+        "inactive": 1
+      },
+      "findings": [],
+      "input": {
+        "age": 42,
+        "budget": "premium",
+        "concerns": [
+          "age_changes",
+          "dryness"
+        ],
+        "custom_restrictions": [],
+        "excluded_ingredients": [],
+        "experience": "guided",
+        "primary_concern": null,
+        "routine_preference": "balanced",
+        "sensitivity_level": "unknown",
+        "skin_type": "normal",
+        "texture_preference": "no_preference",
+        "values": [
+          "price_quality",
+          "comfort"
+        ]
+      },
+      "quality_gap_count": 0,
+      "routine": {
+        "evening": [
+          {
+            "brand": "DE_CODE",
+            "external_id": "product_005",
+            "name": "Мицеллярная пенка aqua key",
+            "routine_step": "cleanser",
+            "score": 61
+          },
+          {
+            "brand": "LIMONI",
+            "external_id": "product_058",
+            "name": "Vital Crithmum Anti-Age Essence",
+            "routine_step": "toner",
+            "score": 66
+          },
+          {
+            "brand": "TRUE ALCHEMY",
+            "external_id": "product_063",
+            "name": "Vitamin C 13%",
+            "routine_step": "serum",
+            "score": 69
+          },
+          {
+            "brand": "PAYOT",
+            "external_id": "product_050",
+            "name": "Creme riche lissante rides",
+            "routine_step": "moisturizer",
+            "score": 76
+          }
+        ],
+        "morning": [
+          {
+            "brand": "DE_CODE",
+            "external_id": "product_005",
+            "name": "Мицеллярная пенка aqua key",
+            "routine_step": "cleanser",
+            "score": 61
+          },
+          {
+            "brand": "PAYOT",
+            "external_id": "product_050",
+            "name": "Creme riche lissante rides",
+            "routine_step": "moisturizer",
+            "score": 76
+          },
+          {
+            "brand": "POGONIA",
+            "external_id": "product_068",
+            "name": "Idebenone Mild SPF 50+",
+            "routine_step": "spf",
+            "score": 69
+          }
+        ]
+      },
+      "scenario_id": "mature_age_changes_premium",
+      "title": "Age changes and dryness, premium budget",
+      "warning_count": 0
+    },
+    {
+      "allowed_product_count": 38,
+      "contract_error_count": 0,
+      "filter_reasons": {
+        "budget_hard_cap": 12,
+        "excluded_ingredient": 18,
+        "inactive": 1
+      },
+      "findings": [],
+      "input": {
+        "age": 26,
+        "budget": "balanced",
+        "concerns": [
+          "pores",
+          "sebum"
+        ],
+        "custom_restrictions": [],
+        "excluded_ingredients": [
+          "alcohol"
+        ],
+        "experience": "guided",
+        "primary_concern": null,
+        "routine_preference": "balanced",
+        "sensitivity_level": "unknown",
+        "skin_type": "combination",
+        "texture_preference": "no_preference",
+        "values": [
+          "comfort",
+          "price_quality"
+        ]
+      },
+      "quality_gap_count": 0,
+      "routine": {
+        "evening": [
+          {
+            "brand": "Bioderma",
+            "external_id": "product_003",
+            "name": "Гель для умывания Sebium",
+            "routine_step": "cleanser",
+            "score": 81
+          },
+          {
+            "brand": "Round Lab",
+            "external_id": "product_043",
+            "name": "Birch juice moisturizing toner",
+            "routine_step": "toner",
+            "score": 64
+          },
+          {
+            "brand": "TRUE ALCHEMY",
+            "external_id": "product_063",
+            "name": "Vitamin C 13%",
+            "routine_step": "serum",
+            "score": 64
+          },
+          {
+            "brand": "Гельтек",
+            "external_id": "product_038",
+            "name": "NMF Protection",
+            "routine_step": "moisturizer",
+            "score": 61
+          }
+        ],
+        "morning": [
+          {
+            "brand": "Bioderma",
+            "external_id": "product_003",
+            "name": "Гель для умывания Sebium",
+            "routine_step": "cleanser",
+            "score": 81
+          },
+          {
+            "brand": "Гельтек",
+            "external_id": "product_038",
+            "name": "NMF Protection",
+            "routine_step": "moisturizer",
+            "score": 61
+          },
+          {
+            "brand": "POGONIA",
+            "external_id": "product_068",
+            "name": "Idebenone Mild SPF 50+",
+            "routine_step": "spf",
+            "score": 64
+          }
+        ]
+      },
+      "scenario_id": "combination_pores_no_alcohol",
+      "title": "Combination skin, pores and sebum, no alcohol",
+      "warning_count": 0
+    }
+  ],
+  "schema_version": "routine-quality-audit-v1",
+  "selection": {
+    "ignored_available_steps": [
+      "mask"
+    ],
+    "overused_products": [],
+    "selected_step_distribution": {
+      "cleanser": 16,
+      "moisturizer": 16,
+      "serum": 6,
+      "spf": 8,
+      "toner": 6
+    },
+    "top_selected_products": [
+      {
+        "brand": "POGONIA",
+        "external_id": "product_068",
+        "name": "Idebenone Mild SPF 50+",
+        "routine_step": "spf",
+        "scenario_ratio": 0.625,
+        "selected_scenario_count": 5
+      },
+      {
+        "brand": "Aravia Laboratories",
+        "external_id": "product_004",
+        "name": "Hyaluronic Micellar Water",
+        "routine_step": "cleanser",
+        "scenario_ratio": 0.375,
+        "selected_scenario_count": 3
+      },
+      {
+        "brand": "Uriage",
+        "external_id": "product_049",
+        "name": "Xemose Face Cream",
+        "routine_step": "moisturizer",
+        "scenario_ratio": 0.375,
+        "selected_scenario_count": 3
+      },
+      {
+        "brand": "Round Lab",
+        "external_id": "product_043",
+        "name": "Birch juice moisturizing toner",
+        "routine_step": "toner",
+        "scenario_ratio": 0.375,
+        "selected_scenario_count": 3
+      },
+      {
+        "brand": "DE_CODE",
+        "external_id": "product_005",
+        "name": "Мицеллярная пенка aqua key",
+        "routine_step": "cleanser",
+        "scenario_ratio": 0.375,
+        "selected_scenario_count": 3
+      },
+      {
+        "brand": "TRUE ALCHEMY",
+        "external_id": "product_063",
+        "name": "Vitamin C 13%",
+        "routine_step": "serum",
+        "scenario_ratio": 0.375,
+        "selected_scenario_count": 3
+      },
+      {
+        "brand": "THE U",
+        "external_id": "product_037",
+        "name": "Keep Calm Cream",
+        "routine_step": "moisturizer",
+        "scenario_ratio": 0.25,
+        "selected_scenario_count": 2
+      },
+      {
+        "brand": "Гельтек",
+        "external_id": "product_038",
+        "name": "NMF Protection",
+        "routine_step": "moisturizer",
+        "scenario_ratio": 0.25,
+        "selected_scenario_count": 2
+      },
+      {
+        "brand": "ART & FACT",
+        "external_id": "product_052",
+        "name": "Azeloglicine 10%",
+        "routine_step": "serum",
+        "scenario_ratio": 0.125,
+        "selected_scenario_count": 1
+      },
+      {
+        "brand": "Round Lab",
+        "external_id": "product_046",
+        "name": "Birch juice moisturizing sunscreen SPF 50+",
+        "routine_step": "spf",
+        "scenario_ratio": 0.125,
+        "selected_scenario_count": 1
+      }
+    ]
+  },
+  "summary": {
+    "contract_error_count": 0,
+    "ignored_available_step_count": 1,
+    "overused_product_count": 0,
+    "quality_gap_count": 1,
+    "scenario_count": 8,
+    "scenario_quality_gap_count": 0,
+    "terminology_gap_count": 0,
+    "warning_count": 0
+  },
+  "terminology": {
+    "canonical_concern_values": [
+      "acne",
+      "age_changes",
+      "dehydration",
+      "dryness",
+      "dullness",
+      "pigmentation",
+      "pores",
+      "post_acne",
+      "reactivity",
+      "redness",
+      "sebum",
+      "uneven_tone",
+      "unknown"
+    ],
+    "concern_enum_legacy_values": [],
+    "concern_enum_missing_canonical_values": [],
+    "concern_enum_values": [
+      "acne",
+      "age_changes",
+      "dehydration",
+      "dryness",
+      "dullness",
+      "pigmentation",
+      "pores",
+      "post_acne",
+      "reactivity",
+      "redness",
+      "sebum",
+      "uneven_tone",
+      "unknown"
+    ],
+    "dataset_routine_steps": [
+      "cleanser",
+      "mask",
+      "moisturizer",
+      "serum",
+      "spf",
+      "toner"
+    ],
+    "known_routine_steps": [
+      "cleanser",
+      "exfoliation",
+      "mask",
+      "moisturizer",
+      "serum",
+      "spf",
+      "toner",
+      "treatment"
+    ],
+    "routine_step_enum_missing_known_values": [],
+    "routine_step_enum_values": [
+      "cleanser",
+      "exfoliation",
+      "mask",
+      "moisturizer",
+      "serum",
+      "spf",
+      "toner",
+      "treatment"
+    ]
+  }
+}

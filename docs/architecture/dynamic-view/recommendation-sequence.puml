@@ -1,0 +1,33 @@
+@startuml koyash-recommendation-sequence
+title KOYASH — Recommendation Flow (Dynamic View)
+
+actor User
+participant "SPA (browser)" as SPA
+participant "nginx" as NGINX
+participant "recommendations endpoint" as API
+participant "RecommendationService" as SVC
+participant "ProductRepository" as REPO
+database "MongoDB" as DB
+participant "Algorithms" as ALGO
+participant "ExplanationService" as EXP
+participant "RecommendationRepository" as RREPO
+
+User -> SPA : complete questionnaire
+SPA -> NGINX : POST /api/v1/recommendations
+NGINX -> API : proxy POST /recommendations
+API -> SVC : create_recommendation(request)
+SVC -> REPO : list_active_products()
+REPO -> DB : query active products
+DB --> REPO : products
+REPO --> SVC : products
+SVC -> ALGO : filter -> score -> sort -> build routine
+ALGO --> SVC : routine
+SVC -> EXP : build explanations
+EXP --> SVC : explanations
+SVC -> RREPO : save recommendation
+RREPO -> DB : insert
+SVC --> API : RecommendationResponse
+API --> NGINX : 200 JSON
+NGINX --> SPA : 200 JSON
+SPA --> User : show cosmetic bag + explanations
+@enduml

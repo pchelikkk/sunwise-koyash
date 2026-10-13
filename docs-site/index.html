@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="KOYASH maintained product documentation and delivery evidence." />
+    <title>KOYASH Documentation</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #462f39;
+        --muted: #79616c;
+        --accent: #dc5f92;
+        --accent-strong: #bd3e73;
+        --paper: #fffafc;
+        --card: rgba(255, 255, 255, 0.88);
+        --line: #f1c7d8;
+        --success: #2f795f;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 95% 5%, rgba(244, 170, 201, .36), transparent 28rem),
+          linear-gradient(145deg, #fff7fa 0%, #fffdfd 54%, #fff2f7 100%);
+        min-height: 100vh;
+      }
+      a { color: var(--accent-strong); text-underline-offset: .2em; }
+      a:hover { color: #8e2853; }
+      .shell { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+      header { padding: 28px 0; }
+      nav { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+      .brand { font-weight: 800; letter-spacing: .16em; color: var(--accent-strong); }
+      .pill { display: inline-flex; padding: 9px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); text-decoration: none; font-weight: 700; }
+      main { padding: 42px 0 72px; }
+      .hero { display: grid; grid-template-columns: 1.35fr .65fr; gap: 28px; align-items: stretch; }
+      .panel { border: 1px solid var(--line); border-radius: 28px; background: var(--card); box-shadow: 0 24px 70px rgba(105, 50, 73, .10); }
+      .hero-copy { padding: clamp(32px, 6vw, 68px); }
+      .eyebrow { color: var(--accent-strong); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; font-size: .78rem; }
+      h1 { margin: 14px 0 18px; font-size: clamp(2.7rem, 7vw, 5.7rem); line-height: .94; letter-spacing: -.055em; }
+      .lead { max-width: 700px; color: var(--muted); font-size: clamp(1rem, 2vw, 1.25rem); line-height: 1.65; }
+      .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+      .button { display: inline-flex; padding: 13px 18px; border-radius: 14px; font-weight: 800; text-decoration: none; border: 1px solid var(--accent); }
+      .button.primary { color: #fff; background: var(--accent); }
+      .button.secondary { background: #fff; }
+      .status { padding: 30px; display: flex; flex-direction: column; justify-content: space-between; }
+      .status strong { display: block; margin-bottom: 7px; font-size: 1.15rem; }
+      .status-line { margin: 0 0 20px; color: var(--muted); line-height: 1.5; }
+      .ok { color: var(--success); font-weight: 800; }
+      h2 { margin: 52px 0 18px; font-size: clamp(1.6rem, 3vw, 2.2rem); letter-spacing: -.03em; }
+      .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+      .card { padding: 24px; border: 1px solid var(--line); border-radius: 20px; background: var(--card); }
+      .card h3 { margin: 0 0 10px; }
+      .card p { color: var(--muted); line-height: 1.55; }
+      .links { display: grid; gap: 9px; margin-top: 16px; }
+      footer { padding: 30px 0 44px; color: var(--muted); border-top: 1px solid var(--line); }
+      @media (max-width: 820px) {
+        .hero, .grid { grid-template-columns: 1fr; }
+        nav { align-items: flex-start; }
+        .shell { width: min(100% - 24px, 1120px); }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="shell">
+      <nav aria-label="Primary">
+        <div class="brand">KOYASH</div>
+        <a class="pill" href="https://gitlab.pg.innopolis.university/s.anisimov/sunwise-koyash">GitLab repository</a>
+      </nav>
+    </header>
+    <main class="shell">
+      <section class="hero" aria-labelledby="title">
+        <div class="panel hero-copy">
+          <div class="eyebrow">Team 12 · Sunwise</div>
+          <h1 id="title">Documentation that gets you to the answer.</h1>
+          <p class="lead">KOYASH is an explainable skincare recommendation service. This portal is the maintained entry point for product access, handover, engineering decisions, quality evidence, and Assignment 6 delivery.</p>
+          <div class="actions">
+            <a class="button primary" href="http://10.93.26.208:8080/">Open KOYASH</a>
+            <a class="button secondary" href="https://gitlab.pg.innopolis.university/s.anisimov/sunwise-koyash/-/releases/v1.0.1">Release v1.0.1</a>
+          </div>
+        </div>
+        <aside class="panel status" aria-label="Delivery status">
+          <div>
+            <span class="eyebrow">Current state</span>
+            <h2 style="margin-top:12px">MVP v3</h2>
+            <p class="status-line">Final patch release mapped to Sprint 5 with guarded explanations, responsive experience, protected admin analytics, and complete handover guidance.</p>
+          </div>
+          <div>
+            <strong class="ok">Ready for independent use</strong>
+            <span>Customer status: Accepted with follow-up items</span>
+          </div>
+        </aside>
+      </section>
+
+      <h2>Start here</h2>
+      <section class="grid" aria-label="Primary documentation">
+        <article class="card">
+          <h3>Use and operate</h3>
+          <p>Run the stack, verify the deployment, manage configuration, and understand the remaining ownership transfer.</p>
+          <div class="links">
+            <a href="https://gitlab.pg.innopolis.university/s.anisimov/sunwise-koyash/-/blob/main/README.md">README and run guide</a>
+            <a href="https://gitlab.pg.innopolis.university/s.anisimov/sunwise-koyash/-/blob/main/docs/customer-handover.md">Customer handover</a>
+            <a href="https://gitlab.pg.innopolis.university/s.anisimov/sunwise-koyash/-/blob/main/docs/development-process.md">Development process</a>
+          </div>
+        </article>
+        <article class="card">
+          <h3>Understand the system</h3>
+          <p>Inspect the architecture, product boundary, recommendation contract, and protected administrator surface.</p>
+          <div class="links">
+            <a href="https://gitlab.pg.innopolis.university/s.anisimov/sunwise-koyash/-/tree/main/docs/architecture">Architecture and ADRs</a>
+            <a href="https://gitlab.pg.innopolis.university/s.anisimov/sunwise-koyash/-/blob/main/docs/product-experience-v3.md">Product experience</a>
+            <a href="https://gitlab.pg.innopolis.university/s.anisimov/sunwise-koyash/-/blob/main/docs/admin-security.md">Admin security boundary</a>
+          </div>
+        </article>
+        <article class="card">
+          <h3>Verify quality</h3>
+          <p>Review measurable quality requirements, automated verification, UAT outcomes, and the Definition of Done.</p>
+          <div class="links">
+            <a href="https://gitlab.pg.innopolis.university/s.anisimov/sunwise-koyash/-/blob/main/docs/quality-requirements.md">Quality requirements</a>
+            <a href="https://gitlab.pg.innopolis.university/s.anisimov/sunwise-koyash/-/blob/main/docs/testing.md">Testing strategy</a>
+            <a href="https://gitlab.pg.innopolis.university/s.anisimov/sunwise-koyash/-/blob/main/docs/user-acceptance-tests.md">User acceptance tests</a>
+          </div>
+        </article>
+      </section>
+
+      <h2>Delivery evidence</h2>
+      <section class="grid" aria-label="Assignment evidence">
+        <article class="card">
+          <h3>Week 6 · Sprint 4</h3>
+          <p>Trial release v0.4.0, transition-readiness review, customer trial feedback, and Week 7 follow-up scope.</p>
+          <div class="links"><a href="https://gitlab.pg.innopolis.university/s.anisimov/sunwise-koyash/-/tree/main/reports/week6">Open Week 6 report</a></div>
+        </article>
+        <article class="card">
+          <h3>Week 7 · Sprint 5</h3>
+          <p>Final MVP v3 delivery, transition outcome, UAT, contribution traceability, and Demo Day evidence index.</p>
+          <div class="links"><a href="https://gitlab.pg.innopolis.university/s.anisimov/sunwise-koyash/-/tree/main/reports/week7">Open Week 7 report</a></div>
+        </article>
+        <article class="card">
+          <h3>Change history</h3>
+          <p>Inspect the SemVer releases and user-visible evolution from the trial increment to the final patch.</p>
+          <div class="links">
+            <a href="https://gitlab.pg.innopolis.university/s.anisimov/sunwise-koyash/-/blob/main/CHANGELOG.md">CHANGELOG</a>
+            <a href="https://gitlab.pg.innopolis.university/s.anisimov/sunwise-koyash/-/releases">All releases</a>
+          </div>
+        </article>
+      </section>
+    </main>
+    <footer><div class="shell">KOYASH · Team 12 Sunwise · Maintained from the protected default branch.</div></footer>
+  </body>
+</html>

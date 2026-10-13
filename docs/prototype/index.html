@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KOYASH — MVP v1</title>
+  <style>
+    :root{
+      --page:#fffafa;
+      --surface:#fffdfd;
+      --surface-soft:#fff5f8;
+      --rose:#d55f8b;
+      --rose-dark:#b84c75;
+      --rose-soft:#f5dbe5;
+      --rose-border:#edbfd0;
+      --mauve:#b87fa7;
+      --mauve-dark:#6b5368;
+      --text:#51414d;
+      --muted:#8b7080;
+      --field:#eed2dc;
+      --shadow:0 16px 36px rgba(185, 108, 143, .12);
+      --container:min(1180px, calc(100vw - 64px));
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;background:var(--page);color:var(--text);font-family:Arial, Helvetica, sans-serif}
+    body{overflow-x:hidden}
+    button,textarea{font:inherit}
+    .app{min-height:100svh;background:var(--page)}
+    .screen{display:none;min-height:100svh;background:var(--page)}
+    .screen.active{display:block}
+
+    /* HERO */
+    .hero{
+      position:relative;
+      min-height:100svh;
+      overflow:hidden;
+      background:linear-gradient(180deg,#fffdfd 0%,#fffafa 54%,#fff5f8 100%);
+    }
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 78% 21%, rgba(255,214,116,.14), transparent 20rem),
+        radial-gradient(circle at 15% 12%, rgba(244,205,222,.24), transparent 18rem);
+      z-index:0;
+    }
+    .hero-content{
+      position:relative;
+      z-index:4;
+      width:var(--container);
+      margin:0 auto;
+      min-height:calc(100svh - clamp(260px, 34svh, 350px));
+      display:grid;
+      grid-template-columns:minmax(480px, 1fr) minmax(260px, 440px);
+      column-gap:clamp(28px,5vw,90px);
+      align-items:start;
+      padding-top:clamp(34px,7svh,72px);
+    }
+    .brand-logo{
+      display:block;
+      width:clamp(112px,10vw,148px);
+      height:auto;
+      margin:0 0 clamp(12px,2svh,22px);
+    }
+    .hero-title{
+      margin:0;
+      max-width:720px;
+      color:var(--mauve);
+      font-size:clamp(54px,5.4vw,76px);
+      line-height:1.02;
+      letter-spacing:-.055em;
+      font-weight:700;
+    }
+    .hero-subtitle{
+      margin:clamp(14px,2svh,20px) 0 0;
+      max-width:455px;
+      color:#b57da1;
+      font-size:clamp(17px,1.6vw,20px);
+      line-height:1.22;
+      font-weight:600;
+    }
+    .hero-actions{
+      margin-top:clamp(28px,4svh,42px);
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      gap:12px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:52px;
+      border-radius:999px;
+      border:0;
+      cursor:pointer;
+      padding:0 25px;
+      color:#fff;
+      background:linear-gradient(180deg,#d96391 0%,#c84f7f 100%);
+      font-weight:700;
+      font-size:16px;
+      box-shadow:0 12px 24px rgba(200,79,127,.20);
+      transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{transform:translateY(-1px);box-shadow:0 16px 30px rgba(200,79,127,.24)}
+    .btn.secondary{
+      color:var(--rose-dark);
+      background:rgba(255,255,255,.9);
+      border:1.5px solid var(--rose-border);
+      box-shadow:none;
+    }
+    .btn.ghost{
+      color:var(--rose-dark);
+      background:transparent;
+      border:0;
+      box-shadow:none;
+      padding-left:4px;
+      padding-right:4px;
+    }
+    .cta-note{color:#a77f96;font-size:15px;font-weight:600}
+
+    .sun{
+      width:clamp(190px,20vw,260px);
+      height:auto;
+      display:block;
+      margin:clamp(54px,10svh,104px) 0 0 auto;
+      opacity:.95;
+      filter:drop-shadow(0 8px 18px rgba(232,166,70,.10));
+    }
+    .landscape{
+      position:absolute;
+      z-index:2;
+      left:0;
+      right:0;
+      bottom:0;
+      height:clamp(260px,34svh,350px);
+      pointer-events:none;
+      overflow:hidden;
+    }
+    .field-img{
+      position:absolute;
+      left:50%;
+      bottom:0;
+      transform:translateX(-50%);
+      width:max(100vw, 1440px);
+      height:100%;
+      object-fit:cover;
+      object-position:center bottom;
+      opacity:.98;
+    }
+    .house-img{
+      position:absolute;
+      right:clamp(56px,9vw,145px);
+      bottom:clamp(86px,12svh,120px);
+      width:clamp(98px,10vw,150px);
+      height:auto;
+      opacity:.86;
+    }
+    .safe-line{
+      position:absolute;
+      left:0;
+      right:0;
+      top:-1px;
+      height:1px;
+      background:rgba(255,255,255,.6);
+    }
+
+    /* INNER SCREENS */
+    .stage{
+      position:relative;
+      min-height:100svh;
+      overflow:hidden;
+      background:linear-gradient(180deg,#fffdfd 0%,#fff9fb 60%,#fff4f8 100%);
+    }
+    .stage-content{
+      position:relative;
+      z-index:3;
+      width:var(--container);
+      margin:0 auto;
+      min-height:100svh;
+      padding:clamp(28px,5svh,56px) 0 clamp(240px,30svh,330px);
+      display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(260px,330px);
+      gap:clamp(22px,3vw,42px);
+      align-items:start;
+    }
+    .stage-main{
+      max-width:860px;
+    }
+    .topbar{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:clamp(18px,3svh,30px);
+    }
+    .stage .brand-logo{width:110px;margin-bottom:14px}
+    .step-label{color:#c76d94;font-weight:700;font-size:14px;margin:0 0 10px}
+    .progress{
+      width:min(320px,48vw);
+      height:8px;
+      background:#f3dce6;
+      border-radius:999px;
+      overflow:hidden;
+      margin-bottom:clamp(20px,3svh,30px);
+    }
+    .progress span{
+      display:block;
+      height:100%;
+      border-radius:999px;
+      background:linear-gradient(90deg,#ef91ae 0%,#db6e99 58%,#bf86ad 100%);
+    }
+    .stage-title{
+      margin:0;
+      color:var(--mauve);
+      font-size:clamp(42px,4.4vw,64px);
+      line-height:1.02;
+      letter-spacing:-.05em;
+      font-weight:700;
+      max-width:780px;
+    }
+    .stage-lead{
+      margin:clamp(12px,2svh,18px) 0 0;
+      max-width:650px;
+      color:#9a7488;
+      font-weight:600;
+      font-size:clamp(16px,1.35vw,18px);
+      line-height:1.42;
+    }
+    .why-card{
+      margin-top:clamp(58px,11svh,112px);
+      border:1.5px solid rgba(237,191,208,.85);
+      background:rgba(255,255,255,.72);
+      border-radius:28px;
+      padding:22px 22px 24px;
+      box-shadow:0 12px 28px rgba(185,108,143,.08);
+      backdrop-filter:blur(8px);
+    }
+    .why-card h3{margin:0 0 10px;color:#c6618a;font-size:20px}
+    .why-card p{margin:0;color:#856c7d;font-size:15px;line-height:1.48}
+
+    .options{
+      margin-top:clamp(26px,4svh,38px);
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:14px;
+      max-width:880px;
+    }
+    .options.three{grid-template-columns:repeat(3,minmax(0,1fr));max-width:960px}
+    .options.four{grid-template-columns:repeat(4,minmax(0,1fr));max-width:1040px}
+    .option{
+      position:relative;
+      min-height:104px;
+      border:1.5px solid var(--rose-border);
+      border-radius:28px;
+      background:rgba(255,255,255,.86);
+      padding:18px 56px 18px 20px;
+      cursor:pointer;
+      box-shadow:0 10px 24px rgba(185,108,143,.07);
+      transition:transform .15s ease,border-color .15s ease,background .15s ease;
+    }
+    .option:hover{transform:translateY(-1px)}
+    .option.selected{
+      background:#fff3f7;
+      border-color:#dc7fa3;
+    }
+    .option .tick{
+      position:absolute;
+      right:18px;
+      top:50%;
+      transform:translateY(-50%) scale(.92);
+      width:30px;
+      height:30px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(180deg,#d86593 0%,#c84f7f 100%);
+      color:#fff;
+      font-weight:800;
+      opacity:0;
+      transition:opacity .12s ease,transform .12s ease;
+    }
+    .option.selected .tick{opacity:1;transform:translateY(-50%) scale(1)}
+    .option strong{
+      display:block;
+      color:#5d4b61;
+      font-size:18px;
+      line-height:1.2;
+      margin:0 0 7px;
+    }
+    .option span{display:block;color:#8f7385;font-size:14px;line-height:1.36}
+    .screen-actions{
+      margin-top:clamp(24px,4svh,34px);
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:12px;
+    }
+
+    .summary-grid,.product-grid{
+      margin-top:28px;
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:14px;
+      max-width:900px;
+    }
+    .summary-card,.product-card,.note-card{
+      border:1.5px solid rgba(237,191,208,.85);
+      background:rgba(255,255,255,.84);
+      border-radius:26px;
+      padding:18px 20px;
+      box-shadow:0 10px 24px rgba(185,108,143,.07);
+    }
+    .summary-card strong,.note-card strong,.why-title{display:block;color:#c6618a;margin-bottom:8px}
+    .summary-card span,.note-card p,.product-card p,.meta{color:#806879;line-height:1.45}
+    .loading-list{margin-top:28px;display:grid;gap:12px;max-width:680px}
+    .loading-item{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      padding:16px 18px;
+      border:1.5px solid rgba(237,191,208,.85);
+      border-radius:24px;
+      background:rgba(255,255,255,.84);
+      color:#806879;
+      box-shadow:0 10px 24px rgba(185,108,143,.06);
+    }
+    .bullet{
+      flex:0 0 auto;
+      width:30px;
+      height:30px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      color:#fff;
+      background:linear-gradient(180deg,#d86593 0%,#c84f7f 100%);
+      font-weight:800;
+    }
+    .product-card{min-height:250px;display:flex;flex-direction:column}
+    .product-head{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+    .product-icon{
+      flex:0 0 auto;
+      width:58px;
+      height:58px;
+      display:grid;
+      place-items:center;
+      border-radius:18px;
+      background:linear-gradient(180deg,#fff4f8 0%,#f4d8e3 100%);
+      color:#c6618a;
+      font-weight:800;
+      font-size:24px;
+    }
+    .product-card h3{margin:0;color:#59495f;font-size:22px;line-height:1.12}
+    .meta{font-size:14px;margin-top:4px}
+    .why-title{margin-top:10px}
+    .product-card .screen-actions{margin-top:auto}
+    .textarea{
+      width:100%;
+      max-width:720px;
+      min-height:130px;
+      margin-top:18px;
+      resize:vertical;
+      border:1.5px solid var(--rose-border);
+      border-radius:24px;
+      background:#fffafb;
+      padding:16px;
+      color:var(--text);
+      outline:none;
+    }
+
+    .question-landscape{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      height:clamp(210px,27svh,300px);
+      overflow:hidden;
+      z-index:1;
+      pointer-events:none;
+      opacity:.9;
+    }
+    .question-landscape .field-img{height:100%;}
+
+    @media (max-width: 980px){
+      :root{--container:min(100vw - 36px, 720px)}
+      .hero-content{
+        grid-template-columns:1fr;
+        min-height:auto;
+        padding-top:28px;
+      }
+      .hero-title{font-size:clamp(44px,12vw,64px)}
+      .sun{
+        position:absolute;
+        right:0;
+        top:28px;
+        width:150px;
+        opacity:.45;
+        z-index:-1;
+        margin:0;
+      }
+      .hero-subtitle{max-width:390px}
+      .landscape{height:260px}
+      .house-img{right:20px;bottom:86px;width:98px}
+      .stage-content{
+        grid-template-columns:1fr;
+        padding-bottom:260px;
+      }
+      .why-card{margin-top:0}
+      .options,.options.three,.options.four,.summary-grid,.product-grid{grid-template-columns:1fr}
+      .option{min-height:90px}
+    }
+    @media (max-height: 720px) and (min-width: 981px){
+      .hero-content{padding-top:28px;min-height:calc(100svh - 250px)}
+      .brand-logo{width:112px;margin-bottom:10px}
+      .hero-title{font-size:58px}
+      .hero-subtitle{font-size:16px;margin-top:10px}
+      .hero-actions{margin-top:24px}
+      .landscape{height:260px}
+      .sun{width:195px;margin-top:56px}
+      .house-img{bottom:86px;width:105px}
+      .stage-content{padding-top:28px;padding-bottom:250px}
+      .stage-title{font-size:46px}
+      .options{margin-top:22px}
+      .option{min-height:88px}
+    }
+  </style>
+</head>
+<body>
+<main class="app">
+  <section class="screen active" id="landing">
+    <div class="hero">
+      <div class="hero-content">
+        <div>
+          <img class="brand-logo" src="assets/logo.png" alt="Koyash">
+          <h1 class="hero-title">Разберёмся с<br>уходом вместе</h1>
+          <p class="hero-subtitle">Поделитесь, что беспокоит кожу — KOYASH бережно подберёт уход и объяснит каждый выбор.</p>
+          <div class="hero-actions">
+            <button class="btn" data-go="skin-type">собрать косметичку</button>
+            <div class="cta-note">6 вопросов • около 3 минут</div>
+          </div>
+        </div>
+        <div>
+          <img class="sun" src="assets/sun.png" alt="" aria-hidden="true">
+        </div>
+      </div>
+      <div class="landscape" aria-hidden="true">
+        <div class="safe-line"></div>
+        <img class="field-img" src="assets/field.png" alt="">
+        <img class="house-img" src="assets/house.png" alt="">
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" id="skin-type">
+    <div class="stage">
+      <div class="stage-content">
+        <div class="stage-main">
+          <div class="topbar">
+            <div>
+              <img class="brand-logo" src="assets/logo.png" alt="Koyash">
+              <div class="step-label">Шаг 1 из 6</div>
+              <div class="progress"><span style="width:16%"></span></div>
+            </div>
+            <button class="btn ghost" data-go="landing">на главную</button>
+          </div>
+          <h2 class="stage-title">Какая у тебя кожа?</h2>
+          <p class="stage-lead">Выбери один вариант. Если сложно определить точно, можно выбрать самый близкий.</p>
+          <div class="options" data-select="single" data-field="skinType">
+            <div class="option" data-value="Жирная"><span class="tick">✓</span><strong>Жирная</strong><span>Часто есть блеск и расширенные поры.</span></div>
+            <div class="option" data-value="Сухая"><span class="tick">✓</span><strong>Сухая</strong><span>Есть сухость, стянутость или шелушение.</span></div>
+            <div class="option selected" data-value="Комбинированная"><span class="tick">✓</span><strong>Комбинированная</strong><span>Разные зоны лица ведут себя по-разному.</span></div>
+            <div class="option" data-value="Чувствительная"><span class="tick">✓</span><strong>Чувствительная</strong><span>Кожа часто реагирует покраснением или дискомфортом.</span></div>
+          </div>
+          <div class="screen-actions">
+            <button class="btn secondary" data-go="landing">назад</button>
+            <button class="btn" data-go="concerns">дальше</button>
+          </div>
+        </div>
+        <aside class="why-card">
+          <h3>Зачем мы спрашиваем</h3>
+          <p>Так KOYASH не будет советовать слишком активные или просто неподходящие средства. Нам важно понять базовые особенности кожи до подбора рутины.</p>
+        </aside>
+      </div>
+      <div class="question-landscape"><img class="field-img" src="assets/field.png" alt=""></div>
+    </div>
+  </section>
+
+  <section class="screen" id="concerns">
+    <div class="stage">
+      <div class="stage-content">
+        <div class="stage-main">
+          <div class="topbar"><div><img class="brand-logo" src="assets/logo.png" alt="Koyash"><div class="step-label">Шаг 2 из 6</div><div class="progress"><span style="width:33%"></span></div></div></div>
+          <h2 class="stage-title">Что хочется улучшить в первую очередь?</h2>
+          <p class="stage-lead">Можно выбрать несколько пунктов. Это помогает понять, какие задачи сейчас важнее всего.</p>
+          <div class="options four" data-select="multi" data-field="concerns">
+            <div class="option selected" data-value="Высыпания"><span class="tick">✓</span><strong>Высыпания</strong></div>
+            <div class="option selected" data-value="Жирный блеск"><span class="tick">✓</span><strong>Жирный блеск</strong></div>
+            <div class="option" data-value="Сухость"><span class="tick">✓</span><strong>Сухость</strong></div>
+            <div class="option" data-value="Чувствительность"><span class="tick">✓</span><strong>Чувствительность</strong></div>
+            <div class="option" data-value="Постакне"><span class="tick">✓</span><strong>Постакне</strong></div>
+            <div class="option" data-value="Неровный тон"><span class="tick">✓</span><strong>Неровный тон</strong></div>
+            <div class="option" data-value="Возрастные изменения"><span class="tick">✓</span><strong>Возрастные изменения</strong></div>
+            <div class="option" data-value="Пока не знаю"><span class="tick">✓</span><strong>Пока не знаю</strong></div>
+          </div>
+          <div class="screen-actions"><button class="btn secondary" data-go="skin-type">назад</button><button class="btn" data-go="budget">дальше</button></div>
+        </div>
+        <aside class="why-card"><h3>Зачем мы спрашиваем</h3><p>Уход строится вокруг конкретных задач. Базовый уход для комфорта и подбор под жирный блеск — это разные сценарии.</p></aside>
+      </div>
+      <div class="question-landscape"><img class="field-img" src="assets/field.png" alt=""></div>
+    </div>
+  </section>
+
+  <section class="screen" id="budget">
+    <div class="stage">
+      <div class="stage-content">
+        <div class="stage-main">
+          <div class="topbar"><div><img class="brand-logo" src="assets/logo.png" alt="Koyash"><div class="step-label">Шаг 3 из 6</div><div class="progress"><span style="width:50%"></span></div></div></div>
+          <h2 class="stage-title">Какой у тебя ориентир по бюджету?</h2>
+          <p class="stage-lead">Это не про “дёшево или дорого”. Нам важно подобрать продукты в комфортном для тебя сегменте.</p>
+          <div class="options three" data-select="single" data-field="budget">
+            <div class="option" data-value="Минимум"><span class="tick">✓</span><strong>Минимум</strong><span>Простая и доступная база.</span></div>
+            <div class="option selected" data-value="Баланс"><span class="tick">✓</span><strong>Баланс</strong><span>Разумное соотношение цены и качества.</span></div>
+            <div class="option" data-value="Люкс"><span class="tick">✓</span><strong>Люкс</strong><span>Можно смотреть более дорогие варианты.</span></div>
+          </div>
+          <div class="screen-actions"><button class="btn secondary" data-go="concerns">назад</button><button class="btn" data-go="exclusions">дальше</button></div>
+        </div>
+        <aside class="why-card"><h3>Зачем мы спрашиваем</h3><p>Один и тот же шаг рутины можно закрыть разными продуктами. Бюджет помогает сразу показывать реалистичный подбор.</p></aside>
+      </div>
+      <div class="question-landscape"><img class="field-img" src="assets/field.png" alt=""></div>
+    </div>
+  </section>
+
+  <section class="screen" id="exclusions">
+    <div class="stage">
+      <div class="stage-content">
+        <div class="stage-main">
+          <div class="topbar"><div><img class="brand-logo" src="assets/logo.png" alt="Koyash"><div class="step-label">Шаг 4 из 6</div><div class="progress"><span style="width:66%"></span></div></div></div>
+          <h2 class="stage-title">Есть ли что-то, чего лучше избегать?</h2>
+          <p class="stage-lead">Можно выбрать несколько ограничений. KOYASH исключит такие варианты из демонстрационного подбора.</p>
+          <div class="options" data-select="multi" data-field="exclusions">
+            <div class="option selected" data-value="Отдушки"><span class="tick">✓</span><strong>Отдушки</strong></div>
+            <div class="option" data-value="Эфирные масла"><span class="tick">✓</span><strong>Эфирные масла</strong></div>
+            <div class="option" data-value="Спирт"><span class="tick">✓</span><strong>Спирт</strong></div>
+            <div class="option" data-value="Нет ограничений"><span class="tick">✓</span><strong>Нет ограничений</strong></div>
+          </div>
+          <div class="screen-actions"><button class="btn secondary" data-go="budget">назад</button><button class="btn" data-go="experience">дальше</button></div>
+        </div>
+        <aside class="why-card"><h3>Зачем мы спрашиваем</h3><p>Это защитный фильтр. Если есть чувствительность или нежелательные ингредиенты, их важно учитывать ещё до результата.</p></aside>
+      </div>
+      <div class="question-landscape"><img class="field-img" src="assets/field.png" alt=""></div>
+    </div>
+  </section>
+
+  <section class="screen" id="experience">
+    <div class="stage">
+      <div class="stage-content">
+        <div class="stage-main">
+          <div class="topbar"><div><img class="brand-logo" src="assets/logo.png" alt="Koyash"><div class="step-label">Шаг 5 из 6</div><div class="progress"><span style="width:83%"></span></div></div></div>
+          <h2 class="stage-title">Какой формат ухода тебе ближе?</h2>
+          <p class="stage-lead">Подберём такую рутину, которую реально будет удобно использовать каждый день.</p>
+          <div class="options" data-select="single" data-field="experience">
+            <div class="option selected" data-value="Начинаю"><span class="tick">✓</span><strong>Начинаю</strong><span>Хочу простой и понятный уход.</span></div>
+            <div class="option" data-value="Есть базовый уход"><span class="tick">✓</span><strong>Есть базовый уход</strong><span>Понимаю основу и хочу точнее.</span></div>
+            <div class="option" data-value="Люблю многоступенчатый уход"><span class="tick">✓</span><strong>Люблю многоступенчатый уход</strong><span>Готова к более подробной рутине.</span></div>
+            <div class="option" data-value="Хочу минимум шагов"><span class="tick">✓</span><strong>Хочу минимум шагов</strong><span>Важно быстро и без лишнего.</span></div>
+          </div>
+          <div class="screen-actions"><button class="btn secondary" data-go="exclusions">назад</button><button class="btn" data-go="values">дальше</button></div>
+        </div>
+        <aside class="why-card"><h3>Зачем мы спрашиваем</h3><p>Даже хороший уход не сработает, если он слишком сложный. Нам важно подобрать рутину, которой реально пользоваться.</p></aside>
+      </div>
+      <div class="question-landscape"><img class="field-img" src="assets/field.png" alt=""></div>
+    </div>
+  </section>
+
+  <section class="screen" id="values">
+    <div class="stage">
+      <div class="stage-content">
+        <div class="stage-main">
+          <div class="topbar"><div><img class="brand-logo" src="assets/logo.png" alt="Koyash"><div class="step-label">Шаг 6 из 6</div><div class="progress"><span style="width:100%"></span></div></div></div>
+          <h2 class="stage-title">Что для тебя особенно важно?</h2>
+          <p class="stage-lead">Выбери несколько приоритетов. Они помогут сделать итоговую косметичку ближе к твоим ожиданиям.</p>
+          <div class="options" data-select="multi" data-field="values">
+            <div class="option selected" data-value="Комфорт"><span class="tick">✓</span><strong>Комфорт</strong></div>
+            <div class="option selected" data-value="Цена / качество"><span class="tick">✓</span><strong>Цена / качество</strong></div>
+            <div class="option" data-value="Мягкие составы"><span class="tick">✓</span><strong>Мягкие составы</strong></div>
+            <div class="option" data-value="Минимум шагов"><span class="tick">✓</span><strong>Минимум шагов</strong></div>
+          </div>
+          <div class="screen-actions"><button class="btn secondary" data-go="experience">назад</button><button class="btn" data-go="summary">проверить ответы</button></div>
+        </div>
+        <aside class="why-card"><h3>Зачем мы спрашиваем</h3><p>Кому-то важнее мягкость, кому-то цена, а кому-то — короткая рутина. Это меняет итоговый подбор.</p></aside>
+      </div>
+      <div class="question-landscape"><img class="field-img" src="assets/field.png" alt=""></div>
+    </div>
+  </section>
+
+  <section class="screen" id="summary">
+    <div class="stage">
+      <div class="stage-content">
+        <div class="stage-main">
+          <img class="brand-logo" src="assets/logo.png" alt="Koyash">
+          <h2 class="stage-title">Проверим всё перед подбором</h2>
+          <p class="stage-lead">Если что-то не так, можно вернуться и поправить ответы.</p>
+          <div class="summary-grid">
+            <div class="summary-card"><strong>Тип кожи</strong><span id="sumSkin">Комбинированная</span></div>
+            <div class="summary-card"><strong>Задачи</strong><span id="sumConcerns">Высыпания, Жирный блеск</span></div>
+            <div class="summary-card"><strong>Бюджет</strong><span id="sumBudget">Баланс</span></div>
+            <div class="summary-card"><strong>Ограничения</strong><span id="sumExclusions">Отдушки</span></div>
+            <div class="summary-card"><strong>Формат ухода</strong><span id="sumExperience">Начинаю</span></div>
+            <div class="summary-card"><strong>Приоритеты</strong><span id="sumValues">Комфорт, Цена / качество</span></div>
+          </div>
+          <div class="screen-actions"><button class="btn secondary" data-go="values">назад</button><button class="btn" data-go="loading">получить подбор</button></div>
+        </div>
+        <aside class="why-card"><h3>Что будет дальше</h3><p>KOYASH соберёт демонстрационную рутину и покажет объяснения к каждому выбору.</p></aside>
+      </div>
+      <div class="question-landscape"><img class="field-img" src="assets/field.png" alt=""></div>
+    </div>
+  </section>
+
+  <section class="screen" id="loading">
+    <div class="stage">
+      <div class="stage-content">
+        <div class="stage-main">
+          <img class="brand-logo" src="assets/logo.png" alt="Koyash">
+          <h2 class="stage-title">Собираем косметичку</h2>
+          <p class="stage-lead">Проверяем ответы, исключаем неподходящее и собираем понятную базовую рутину.</p>
+          <div class="loading-list">
+            <div class="loading-item"><span class="bullet">✓</span>Проверяем тип кожи и основные задачи</div>
+            <div class="loading-item"><span class="bullet">✓</span>Учитываем ограничения и нежелательные ингредиенты</div>
+            <div class="loading-item"><span class="bullet">✓</span>Смотрим бюджет и приоритеты</div>
+            <div class="loading-item"><span class="bullet">✓</span>Готовим объяснения к каждому выбору</div>
+          </div>
+          <div class="screen-actions"><button class="btn" data-go="result">открыть результат</button></div>
+        </div>
+        <aside class="why-card"><h3>Что проверяем в MVP</h3><p>Понятность потока, доверие к подбору и восприятие объяснений “почему этот продукт здесь”.</p></aside>
+      </div>
+      <div class="question-landscape"><img class="field-img" src="assets/field.png" alt=""></div>
+    </div>
+  </section>
+
+  <section class="screen" id="result">
+    <div class="stage">
+      <div class="stage-content">
+        <div class="stage-main">
+          <img class="brand-logo" src="assets/logo.png" alt="Koyash">
+          <h2 class="stage-title">Твоя косметичка готова</h2>
+          <p class="stage-lead">Мы собрали демонстрационную рутину под задачи, бюджет и ограничения.</p>
+          <div class="product-grid">
+            <article class="product-card"><div class="product-head"><div class="product-icon">1</div><div><h3>Мягкое очищение</h3><div class="meta">Sample Cleanser · 750 ₽</div></div></div><strong class="why-title">Почему он здесь</strong><p>Закрывает базовый шаг рутины и подходит под сценарий “Баланс”.</p><div class="screen-actions"><button class="btn secondary" data-go="details">подробнее</button><button class="btn ghost" data-go="feedback">не подошло</button></div></article>
+            <article class="product-card"><div class="product-head"><div class="product-icon">2</div><div><h3>Сыворотка для барьера</h3><div class="meta">Sample Serum · 980 ₽</div></div></div><strong class="why-title">Почему он здесь</strong><p>Поддерживает кожный барьер и делает вечерний уход комфортнее.</p><div class="screen-actions"><button class="btn secondary" data-go="details">подробнее</button><button class="btn ghost" data-go="feedback">не подошло</button></div></article>
+            <article class="product-card"><div class="product-head"><div class="product-icon">3</div><div><h3>Крем для комфорта</h3><div class="meta">Sample Cream · 820 ₽</div></div></div><strong class="why-title">Почему он здесь</strong><p>Помогает закрыть финальный шаг вечерней рутины.</p><div class="screen-actions"><button class="btn secondary" data-go="details">подробнее</button><button class="btn ghost" data-go="feedback">не подошло</button></div></article>
+            <article class="product-card"><div class="product-head"><div class="product-icon">4</div><div><h3>SPF на каждый день</h3><div class="meta">Sample SPF 50 · 890 ₽</div></div></div><strong class="why-title">Почему он здесь</strong><p>Завершает базовую рутину и добавляет ежедневную защиту.</p><div class="screen-actions"><button class="btn secondary" data-go="details">подробнее</button><button class="btn ghost" data-go="feedback">не подошло</button></div></article>
+          </div>
+          <div class="screen-actions"><button class="btn secondary" data-go="landing">на главную</button><button class="btn" data-go="feedback">оставить отзыв</button></div>
+        </div>
+        <aside class="why-card"><h3>Профиль подбора</h3><p>Комбинированная кожа, задачи — высыпания и жирный блеск, бюджет — баланс, исключения — отдушки.</p></aside>
+      </div>
+      <div class="question-landscape"><img class="field-img" src="assets/field.png" alt=""></div>
+    </div>
+  </section>
+
+  <section class="screen" id="details">
+    <div class="stage">
+      <div class="stage-content">
+        <div class="stage-main">
+          <img class="brand-logo" src="assets/logo.png" alt="Koyash">
+          <h2 class="stage-title">Мягкое очищение</h2>
+          <p class="stage-lead">Sample Cleanser · очищение · 750 ₽</p>
+          <div class="note-card" style="margin-top:28px"><strong>Почему он здесь</strong><p>Этот продукт закрывает первый шаг рутины, не конфликтует с выбранными ограничениями и помогает собрать простой базовый уход.</p></div>
+          <div class="note-card" style="margin-top:14px"><strong>Как использовать</strong><p>Нанести на влажную кожу, мягко помассировать и смыть водой.</p></div>
+          <div class="screen-actions"><button class="btn secondary" data-go="result">назад к подбору</button><button class="btn" data-go="feedback">не подошёл</button></div>
+        </div>
+        <aside class="why-card"><h3>Важно</h3><p>Рекомендации в MVP носят информационный характер. При выраженных проблемах кожи лучше обратиться к специалисту.</p></aside>
+      </div>
+      <div class="question-landscape"><img class="field-img" src="assets/field.png" alt=""></div>
+    </div>
+  </section>
+
+  <section class="screen" id="feedback">
+    <div class="stage">
+      <div class="stage-content">
+        <div class="stage-main">
+          <img class="brand-logo" src="assets/logo.png" alt="Koyash">
+          <h2 class="stage-title">Что не подошло?</h2>
+          <p class="stage-lead">Эта обратная связь нужна, чтобы в следующей версии подбирать уход точнее и честнее.</p>
+          <div class="options" data-select="single" data-field="feedbackReason">
+            <div class="option" data-value="Слишком дорого"><span class="tick">✓</span><strong>Слишком дорого</strong></div>
+            <div class="option" data-value="Не нравится бренд"><span class="tick">✓</span><strong>Не нравится бренд</strong></div>
+            <div class="option" data-value="Есть сомнение по составу"><span class="tick">✓</span><strong>Есть сомнение по составу</strong></div>
+            <div class="option" data-value="Не подходит текстура"><span class="tick">✓</span><strong>Не подходит текстура</strong></div>
+          </div>
+          <textarea class="textarea" placeholder="Можно добавить комментарий..."></textarea>
+          <div class="screen-actions"><button class="btn secondary" data-go="result">назад</button><button class="btn" data-go="thanks">отправить</button></div>
+        </div>
+        <aside class="why-card"><h3>Почему это полезно</h3><p>Такая обратная связь показывает, где подбор слабый: в цене, объяснениях, доверии к бренду или восприятии продукта.</p></aside>
+      </div>
+      <div class="question-landscape"><img class="field-img" src="assets/field.png" alt=""></div>
+    </div>
+  </section>
+
+  <section class="screen" id="thanks">
+    <div class="stage">
+      <div class="stage-content">
+        <div class="stage-main">
+          <img class="brand-logo" src="assets/logo.png" alt="Koyash">
+          <h2 class="stage-title">Спасибо, мы сохранили отзыв</h2>
+          <p class="stage-lead">В следующей версии KOYASH сможет точнее учитывать такие ответы при повторном подборе.</p>
+          <div class="screen-actions"><button class="btn" data-go="result">вернуться к подбору</button></div>
+        </div>
+        <aside class="why-card"><h3>Что дальше</h3><p>Следующий шаг — использовать такие ответы для улучшения логики рекомендаций.</p></aside>
+      </div>
+      <div class="question-landscape"><img class="field-img" src="assets/field.png" alt=""></div>
+    </div>
+  </section>
+</main>
+
+<script>
+  const state = {
+    skinType:'Комбинированная',
+    concerns:['Высыпания','Жирный блеск'],
+    budget:'Баланс',
+    exclusions:['Отдушки'],
+    experience:'Начинаю',
+    values:['Комфорт','Цена / качество'],
+    feedbackReason:''
+  };
+
+  const screens=[...document.querySelectorAll('.screen')];
+
+  function updateSummary(){
+    const data={
+      sumSkin:state.skinType,
+      sumConcerns:(state.concerns||[]).join(', ')||'—',
+      sumBudget:state.budget||'—',
+      sumExclusions:(state.exclusions||[]).join(', ')||'—',
+      sumExperience:state.experience||'—',
+      sumValues:(state.values||[]).join(', ')||'—'
+    };
+    Object.entries(data).forEach(([id,value])=>{
+      const el=document.getElementById(id);
+      if(el) el.textContent=value;
+    });
+  }
+
+  function go(id){
+    const next=document.getElementById(id);
+    if(!next) return;
+    screens.forEach(s=>s.classList.remove('active'));
+    next.classList.add('active');
+    updateSummary();
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+
+  function handleOption(option){
+    const group=option.closest('[data-select]');
+    if(!group) return;
+    const field=group.dataset.field;
+    const mode=group.dataset.select;
+    const value=option.dataset.value;
+
+    if(mode==='single'){
+      group.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+      option.classList.add('selected');
+      state[field]=value;
+      return;
+    }
+
+    if(field==='exclusions' && value==='Нет ограничений'){
+      group.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+      option.classList.add('selected');
+      state[field]=[value];
+      return;
+    }
+
+    if(field==='exclusions' && value!=='Нет ограничений'){
+      const none=[...group.querySelectorAll('.option')].find(o=>o.dataset.value==='Нет ограничений');
+      if(none) none.classList.remove('selected');
+    }
+
+    option.classList.toggle('selected');
+    state[field]=[...group.querySelectorAll('.option.selected')].map(o=>o.dataset.value);
+  }
+
+  document.addEventListener('click',event=>{
+    const nav=event.target.closest('[data-go]');
+    if(nav){go(nav.dataset.go);return;}
+    const option=event.target.closest('.option');
+    if(option) handleOption(option);
+  });
+
+  updateSummary();
+</script>
+</body>
+</html>

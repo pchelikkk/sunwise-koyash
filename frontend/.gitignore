@@ -1,0 +1,8 @@
+node_modules
+dist
+public
+test-results
+playwright-report
+.npm
+.DS_Store
+*.log

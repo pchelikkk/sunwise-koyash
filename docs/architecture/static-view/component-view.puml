@@ -1,0 +1,32 @@
+@startuml koyash-component-view
+title KOYASH — Static Component View (MVP v2)
+skinparam componentStyle rectangle
+
+actor "User (browser)" as user
+
+package "Frontend container (nginx)" {
+  [React + Vite SPA] as spa
+  [nginx (static + reverse proxy)] as nginx
+}
+
+package "Backend container (FastAPI / uvicorn)" {
+  [API layer (routers & endpoints)] as api
+  [Service layer] as services
+  [Recommendation algorithms\n(filter / score / sort / routine)] as algo
+  [Repository layer] as repos
+  [Core (config, security, enums)] as core
+  [Pydantic schemas] as schemas
+}
+
+database "MongoDB" as mongo
+
+user --> nginx : HTTP :8080
+nginx --> spa : serve static build
+nginx --> api : proxy /api/v1/* (:8000)
+api --> services
+services --> algo
+services --> repos
+repos --> mongo
+api ..> schemas
+services ..> core
+@enduml

@@ -1,0 +1,123 @@
+name: koyash-production
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "5"
+
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DB_NAME:-koyash}
+    volumes:
+      - koyash_mongo_data:/data/db
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          mongosh --quiet
+          --username "$$MONGO_INITDB_ROOT_USERNAME"
+          --password "$$MONGO_INITDB_ROOT_PASSWORD"
+          --authenticationDatabase admin
+          --eval "db.adminCommand('ping').ok" | grep 1
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    security_opt:
+      - no-new-privileges:true
+    logging: *default-logging
+    networks:
+      - data
+
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    init: true
+    environment:
+      APP_NAME: KOYASH API
+      APP_ENV: production
+      API_V1_PREFIX: /api/v1
+      MONGO_URI: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongo:27017/?authSource=admin
+      MONGO_DB_NAME: ${MONGO_DB_NAME:-koyash}
+      CORS_ORIGINS: ${FRONTEND_BASE_URL}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-60}
+      ANALYTICS_RAW_EVENT_TTL_DAYS: ${ANALYTICS_RAW_EVENT_TTL_DAYS:-180}
+      IMPORT_DATASET_ON_STARTUP: "true"
+      PRODUCT_DATASET_PATH: /data/products.xlsx
+      LLM_ENABLED: ${LLM_ENABLED:-true}
+      LLM_PROVIDER: ${LLM_PROVIDER:-vsellm}
+      LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-12}
+      VSELLM_BASE_URL: ${VSELLM_BASE_URL:-https://api.vsellm.ru/v1}
+      VSELLM_MODEL: ${VSELLM_MODEL:-openai/gpt-4o-mini}
+      VSELLM_API_KEY: ${VSELLM_API_KEY}
+      FRONTEND_BASE_URL: ${FRONTEND_BASE_URL}
+      PASSWORD_RESET_TOKEN_EXPIRE_MINUTES: ${PASSWORD_RESET_TOKEN_EXPIRE_MINUTES:-30}
+      SMTP_ENABLED: ${SMTP_ENABLED:-false}
+    expose:
+      - "8000"
+    volumes:
+      - ./data:/data:ro
+      - ./docs:/docs:ro
+    depends_on:
+      mongo:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - >-
+          import urllib.request;
+          urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5).read()
+      interval: 15s
+      timeout: 6s
+      retries: 8
+      start_period: 30s
+    security_opt:
+      - no-new-privileges:true
+    logging: *default-logging
+    networks:
+      - web
+      - data
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: /api/v1
+    restart: unless-stopped
+    ports:
+      - "${KOYASH_HTTP_PORT:-8080}:80"
+    volumes:
+      - ./frontend/nginx.prod.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/healthz >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+      start_period: 10s
+    security_opt:
+      - no-new-privileges:true
+    logging: *default-logging
+    networks:
+      - web
+
+volumes:
+  koyash_mongo_data:
+    name: koyash_production_mongo_data
+
+networks:
+  web:
+  data:
+    internal: true

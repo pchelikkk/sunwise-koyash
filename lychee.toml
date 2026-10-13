@@ -1,0 +1,24 @@
+exclude = [
+  "^http://localhost",
+  "^https://localhost",
+  "^/src/.*",
+  "^https://www.figma.com/.*",
+  "^https://drive.google.com/.*",
+  "^https://docs.google.com/.*",
+  "^https://youtu.be/.*",
+  "^https://youtube.com/.*",
+  "^https://gitlab.pg.innopolis.university/.*/-/settings/.*"
+]
+
+exclude_path = [
+  ".git",
+  "frontend/index.html",
+  "frontend/node_modules",
+  "backend/.venv"
+]
+
+accept = [200, 204, 206, 429]
+
+max_retries = 3
+timeout = 20
+include_verbatim = true

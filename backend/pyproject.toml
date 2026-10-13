@@ -1,0 +1,16 @@
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+# FastAPI dependency injection intentionally evaluates Depends in signatures.
+ignore = ["B008"]
+
+[tool.ruff.lint.per-file-ignores]
+"app/llm/prompt_templates.py" = ["E501"]
